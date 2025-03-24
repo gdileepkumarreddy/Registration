@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Appointment System</title>
+</head>
+<body id="mainBody">
+
+    <div class="container">
+        <!-- Register Page -->
+        <div id="registerPage" class="content-box">
+            <h2>Register</h2>
+            <input type="text" id="name" placeholder="Enter your name">
+            <input type="email" id="email" placeholder="Enter your email">
+            <input type="password" id="password" placeholder="Enter your password">
+            <button onclick="register()">Register</button>
+            <button onclick="showLogin()">Already Registered? Login</button>
+        </div>
+
+        <!-- Login Page -->
+        <div id="loginPage" class="content-box" style="display: none;">
+            <h2>Login</h2>
+            <input type="email" id="loginEmail" placeholder="Enter your email">
+            <input type="password" id="loginPassword" placeholder="Enter your password">
+            <button onclick="login()">Login</button>
+        </div>
+
+        <!-- User Dashboard -->
+        <div id="userDashboard" class="content-box" style="display: none;">
+            <h2>Doctor Details</h2>
+            <div class="doctor-info">
+                <p>Name: Dr. John Doe</p>
+                <p>Age: 45</p>
+                <p>Specialty: Cardiologist</p>
+                <p>Experience: 15 years</p>
+                <p>Consultation Fee: $150</p>
+            </div>
+            <button onclick="bookAppointment()">Book Now</button>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="content-box" style="display: none;">
+            <h2>Admin Panel</h2>
+            <input type="text" id="doctorName" placeholder="Doctor Name">
+            <input type="number" id="doctorAge" placeholder="Doctor Age">
+            <input type="text" id="doctorSpecialty" placeholder="Specialty">
+            <input type="number" id="doctorExperience" placeholder="Years of Experience">
+            <input type="number" id="doctorFee" placeholder="Consultation Fee">
+            <button onclick="addDoctor()">Add Doctor</button>
+        </div>
+
+        <!-- Doctor Dashboard -->
+        <div id="doctorDashboard" class="content-box doctor-dash" style="display: none;">
+            <div class="doctor-layout">
+                <div class="doctor-details">
+                    <h2>Doctor's Dashboard</h2>
+                    <p>Your Details:</p>
+                    <div class="doctor-info" id="doctorDetails">
+                        <p>Name: Dr. John Doe</p>
+                        <p>Age: 45</p>
+                        <p>Specialty: Cardiologist</p>
+                        <p>Experience: 15 years</p>
+                        <p>Consultation Fee: $150</p>
+                    </div>
+                    <img src="images/doctor-profile.jpg" alt="Doctor Profile" class="doctor-image">
+                </div>
+                <div class="doctor-actions">
+                    <img src="images/Johnny1.jpg" alt="Doctor Image" class="doctor-action-image">
+                    <button onclick="showAppointments()">View Upcoming Appointments</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointments Page -->
+        <div id="appointmentsPage" class="content-box" style="display: none;">
+            <h2>Upcoming Appointments</h2>
+            <div id="appointmentList">
+                <div class="appointment">
+                    <p>Patient: Jane Smith</p>
+                    <p>Date: March 25, 2025</p>
+                    <p>Time: 10:00 AM</p>
+                    <p>Reason: Routine Checkup</p>
+                </div>
+                <div class="appointment">
+                    <p>Patient: Mike Johnson</p>
+                    <p>Date: March 25, 2025</p>
+                    <p>Time: 11:30 AM</p>
+                    <p>Reason: Heart Consultation</p>
+                </div>
+            </div>
+            <button onclick="backToDoctorDash()">Back to Dashboard</button>
+        </div>
+
+        <!-- Thank You Page -->
+        <div id="thankYouPage" class="content-box" style="display: none;">
+            <h2>Thank You!</h2>
+            <p>Thanks for choosing our hospital</p>
+            <img src="images/hospital.jpg" alt="Hospital" class="hospital-image">
+            <button onclick="returnToStart()">Return to Home</button>
+        </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <div class="navigation">
+        <span class="nav-back" onclick="goBack()">◀</span>
+        <span class="nav-next" onclick="goNext()">▶</span>
+    </div>
+
+    <script>
+        let pageStack = ['registerPage'];
+        let currentPageIndex = 0;
+        const pageOrder = [
+            'registerPage',
+            'loginPage',
+            'userDashboard',
+            'adminDashboard',
+            'doctorDashboard',
+            'appointmentsPage',
+            'thankYouPage'
+        ];
+
+        const backgrounds = {
+            'registerPage': 'reg.jpg',
+            'loginPage': 'doc1.jpg',
+            'userDashboard': 'cardiologist.jpg',
+            'adminDashboard': 'admin.jpg',
+            'doctorDashboard': 'Johnny.jpg',
+            'appointmentsPage': 'docbg.jpg',
+            'thankYouPage': 'hospital.jpg'
+        };
+
+        let doctorDetails = {};
+
+        function changePage(current, next) {
+            try {
+                document.getElementById(current).style.display = "none";
+                document.getElementById(next).style.display = "block";
+                document.getElementById("mainBody").style.backgroundImage = `url('images/${backgrounds[next]}')`;
+                
+                if (!pageStack.includes(next)) {
+                    pageStack.push(next);
+                }
+                currentPageIndex = pageOrder.indexOf(next);
+            } catch (error) {
+                console.error("Error changing page:", error);
+                alert("An error occurred while changing pages");
+            }
+        }
+
+        function showLogin() {
+            changePage("registerPage", "loginPage");
+        }
+
+        function showThankYou(currentPage) {
+            changePage(currentPage, "thankYouPage");
+        }
+
+        function returnToStart() {
+            changePage("thankYouPage", "registerPage");
+            pageStack = ['registerPage'];
+            currentPageIndex = 0;
+        }
+
+        function register() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            
+            if (name && email && password) {
+                alert("User Registered Successfully!");
+                showThankYou("registerPage");
+            } else {
+                alert("Please fill all fields");
+            }
+        }
+
+        function login() {
+            let email = document.getElementById("loginEmail").value;
+            let password = document.getElementById("loginPassword").value;
+            
+            if (!email || !password) {
+                alert("Please enter both email and password");
+                return;
+            }
+
+            if (email.includes("@gmail.com")) {
+                changePage("loginPage", "userDashboard");
+            } else if (email.includes("@admin")) {
+                changePage("loginPage", "adminDashboard");
+            } else if (email.includes("@doc")) {
+                changePage("loginPage", "doctorDashboard");
+                updateDoctorDetails();
+            } else {
+                alert("Invalid Login Credentials");
+            }
+        }
+
+        function bookAppointment() {
+            alert("Appointment Booked Successfully!");
+            showThankYou("userDashboard");
+        }
+
+        function addDoctor() {
+            const doctorName = document.getElementById("doctorName").value;
+            const doctorAge = document.getElementById("doctorAge").value;
+            const specialty = document.getElementById("doctorSpecialty").value;
+            const experience = document.getElementById("doctorExperience").value;
+            const fee = document.getElementById("doctorFee").value;
+            
+            if (doctorName && doctorAge && specialty && experience && fee) {
+                doctorDetails = {
+                    name: doctorName,
+                    age: doctorAge,
+                    specialty: specialty,
+                    experience: experience,
+                    fee: fee
+                };
+                alert("Doctor Added Successfully!");
+                showThankYou("adminDashboard");
+            } else {
+                alert("Please enter all doctor details");
+            }
+        }
+
+        function updateDoctorDetails() {
+            const detailsDiv = document.getElementById("doctorDetails");
+            if (Object.keys(doctorDetails).length > 0) {
+                detailsDiv.innerHTML = `
+                    <p>Name: Dr. ${doctorDetails.name}</p>
+                    <p>Age: ${doctorDetails.age}</p>
+                    <p>Specialty: ${doctorDetails.specialty}</p>
+                    <p>Experience: ${doctorDetails.experience} years</p>
+                    <p>Consultation Fee: $${doctorDetails.fee}</p>
+                `;
+            }
+        }
+
+        function showAppointments() {
+            changePage("doctorDashboard", "appointmentsPage");
+        }
+
+        function backToDoctorDash() {
+            changePage("appointmentsPage", "doctorDashboard");
+        }
+
+        function goBack() {
+            if (currentPageIndex > 0) {
+                const prevPage = pageOrder[currentPageIndex - 1];
+                changePage(pageOrder[currentPageIndex], prevPage);
+            } else {
+                alert("You're at the first page");
+            }
+        }
+
+        function goNext() {
+            if (currentPageIndex < pageOrder.length - 1) {
+                const nextPage = pageOrder[currentPageIndex + 1];
+                changePage(pageOrder[currentPageIndex], nextPage);
+            } else {
+                alert("You're at the last page");
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: url('images/reg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            transition: background-image 0.5s ease-in-out;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            position: relative;
+            color: #333;
+        }
+
+        .doctor-dash {
+            width: 600px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .doctor-layout {
+            display: flex;
+            width: 100%;
+        }
+
+        .doctor-details {
+            width: 50%;
+            text-align: left;
+        }
+
+        .doctor-actions {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .doctor-image, .doctor-action-image {
+            width: 100%;
+            max-height: 150px;
+            object-fit: contain;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        h2, p {
+            padding: 5px 10px;
+        }
+
+        input {
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            background: white;
+        }
+
+        button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .doctor-info, .appointment {
+            background: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .appointment {
+            border: 1px solid #ccc;
+        }
+
+        .hospital-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+
+        .nav-back, .nav-next {
+            color: #007bff;
+            cursor: pointer;
+            font-size: 2em;
+            padding: 5px;
+        }
+
+        .nav-back:hover, .nav-next:hover {
+            color: #0056b3;
+        }
+    </style>
+
+</body>
+</html>
