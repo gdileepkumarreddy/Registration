@@ -63,10 +63,10 @@
                         <p>Experience: 15 years</p>
                         <p>Consultation Fee: $150</p>
                     </div>
-                    <img src="images/doctor-profile.jpg" alt="Doctor Profile" class="doctor-image">
+                    <img src="doctor-profile.jpg" alt="Doctor Profile" class="doctor-image">
                 </div>
                 <div class="doctor-actions">
-                    <img src="images/Johnny1.jpg" alt="Doctor Image" class="doctor-action-image">
+                    <img src="Johnny1.jpg" alt="Doctor Image" class="doctor-action-image">
                     <button onclick="showAppointments()">View Upcoming Appointments</button>
                 </div>
             </div>
@@ -96,7 +96,7 @@
         <div id="thankYouPage" class="content-box" style="display: none;">
             <h2>Thank You!</h2>
             <p>Thanks for choosing our hospital</p>
-            <img src="images/hospital.jpg" alt="Hospital" class="hospital-image">
+            <img src="hospital.jpg" alt="Hospital" class="hospital-image">
             <button onclick="returnToStart()">Return to Home</button>
         </div>
     </div>
@@ -136,7 +136,7 @@
             try {
                 document.getElementById(current).style.display = "none";
                 document.getElementById(next).style.display = "block";
-                document.getElementById("mainBody").style.backgroundImage = `url('images/${backgrounds[next]}')`;
+                document.getElementById("mainBody").style.backgroundImage = `url('${backgrounds[next]}')`;
                 
                 if (!pageStack.includes(next)) {
                     pageStack.push(next);
@@ -265,7 +265,7 @@
 
     <style>
         body {
-            background: url('images/reg.jpg') no-repeat center center fixed;
+            background: url('reg.jpg') no-repeat center center fixed;
             background-size: cover;
             display: flex;
             justify-content: center;
